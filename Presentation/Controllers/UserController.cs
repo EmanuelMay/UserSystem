@@ -11,5 +11,12 @@ public class UserController(
 ) : Controller
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<UserRensponseDTO>>> GetAll() => Ok(await service.GetAll());
+    public async Task<ActionResult<IEnumerable<UserResponseDTO>>> GetAll() => Ok(await service.GetAll());
+
+    [HttpPost]
+    public async Task<ActionResult<UserResponseDTO>> Create(UserCreateDTO userDTO)
+    {
+        var response = await service.Create(userDTO);
+        return Created($"user/{response.Id}", response);
+    }
 }

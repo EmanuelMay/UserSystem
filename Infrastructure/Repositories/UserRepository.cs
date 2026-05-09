@@ -10,4 +10,10 @@ public class UserRepository(
 ) : IUserRepository
 {
     public async Task<IEnumerable<User>> GetAll() => await repository.Users.ToListAsync();
+
+    public async Task Create(User user) => await repository.Users.AddAsync(user);
+
+    public async Task<bool> ExistsByEmail(string email) => await repository.Users.AnyAsync(u => u.Email == email);
+
+    public async Task SaveChanges() => await repository.SaveChangesAsync();
 }
