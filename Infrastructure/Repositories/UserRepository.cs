@@ -11,6 +11,8 @@ public class UserRepository(
 {
     public async Task<IEnumerable<User>> GetAllAsync() => await repository.Users.ToListAsync();
 
+    public async Task<User?> GetUserAsync(int id) => await repository.Users.FirstOrDefaultAsync(u => u.Id == id);
+
     public async Task CreateAsync(User user) => await repository.Users.AddAsync(user);
 
     public async Task<bool> ExistsByEmailAsync(string email) => await repository.Users.AnyAsync(u => u.Email == email);

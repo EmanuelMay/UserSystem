@@ -13,6 +13,9 @@ public class UserController(
     [HttpGet]
     public async Task<ActionResult<IEnumerable<UserResponseDTO>>> GetAll() => Ok(await service.GetAllAsync());
 
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<UserResponseDTO>> GetUser(int id) => Ok(await service.GetUserAsync(id));
+
     [HttpPost]
     public async Task<ActionResult<UserResponseDTO>> Create(UserCreateDTO userDTO)
     {

@@ -21,6 +21,21 @@ public class UserService(
         });
     }
 
+    public async Task<UserResponseDTO> GetUserAsync(int id)
+    {
+        var user = await repository.GetUserAsync(id);
+
+        if (user is null)
+            throw new UserNotFoundException("user not found");
+        
+        return new UserResponseDTO()
+        {
+            Id = user.Id,
+            Name = user.Name,
+            Email = user.Email
+        };
+    }
+
     public async Task<UserResponseDTO> CreateAsync(UserCreateDTO userDTO)
     {
         if (await repository.ExistsByEmailAsync(userDTO.Email))
