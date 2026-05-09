@@ -3,6 +3,7 @@ using UserSystem.Application.Services;
 using UserSystem.Domain.Interfaces;
 using UserSystem.Infrastructure.Context;
 using UserSystem.Infrastructure.Repositories;
+using UserSystem.Infrastructure.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<PasswordHasher>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 string? mySqlConnection = builder.Configuration.GetConnectionString("Default");
