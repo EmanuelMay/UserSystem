@@ -9,9 +9,9 @@ public class UserService(
     IUserRepository repository
 )
 {
-    public async Task<IEnumerable<UserResponseDTO>> GetAll()
+    public async Task<IEnumerable<UserResponseDTO>> GetAllAsync()
     {
-        var users = await repository.GetAll();
+        var users = await repository.GetAllAsync();
 
         return users.Select(u => new UserResponseDTO
         {
@@ -21,15 +21,15 @@ public class UserService(
         });
     }
 
-    public async Task<UserResponseDTO> Create(UserCreateDTO userDTO)
+    public async Task<UserResponseDTO> CreateAsync(UserCreateDTO userDTO)
     {
-        if (await repository.ExistsByEmail(userDTO.Email))
+        if (await repository.ExistsByEmailAsync(userDTO.Email))
             throw new EmailAlreadyExistException("email already exists");
         
         var user = new User(userDTO.Name, userDTO.Email, userDTO.Password);
 
-        await repository.Create(user);
-        await repository.SaveChanges();
+        await repository.CreateAsync(user);
+        await repository.SaveChangesAsync();
 
         return new UserResponseDTO
         {

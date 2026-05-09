@@ -9,11 +9,11 @@ public class UserRepository(
     AppDbContext repository
 ) : IUserRepository
 {
-    public async Task<IEnumerable<User>> GetAll() => await repository.Users.ToListAsync();
+    public async Task<IEnumerable<User>> GetAllAsync() => await repository.Users.ToListAsync();
 
-    public async Task Create(User user) => await repository.Users.AddAsync(user);
+    public async Task CreateAsync(User user) => await repository.Users.AddAsync(user);
 
-    public async Task<bool> ExistsByEmail(string email) => await repository.Users.AnyAsync(u => u.Email == email);
+    public async Task<bool> ExistsByEmailAsync(string email) => await repository.Users.AnyAsync(u => u.Email == email);
 
-    public async Task SaveChanges() => await repository.SaveChangesAsync();
+    public async Task SaveChangesAsync() => await repository.SaveChangesAsync();
 }

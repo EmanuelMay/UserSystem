@@ -4,11 +4,11 @@ namespace UserSystem.Domain.Interfaces;
 
 public interface IUserRepository
 {
-    public Task<IEnumerable<User>> GetAll();
+    public Task<IEnumerable<User>> GetAllAsync();
 
-    public Task Create(User user);
+    public Task CreateAsync(User user);
 
-    public Task<bool> ExistsByEmail(string email);
+    public Task<bool> ExistsByEmailAsync(string email);
 
-    public Task SaveChanges();
+    public Task SaveChangesAsync();
 }
