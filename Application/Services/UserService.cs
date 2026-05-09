@@ -2,10 +2,12 @@ using UserSystem.Application.DTO;
 using UserSystem.Domain.Entities;
 using UserSystem.Domain.Exceptions;
 using UserSystem.Domain.Interfaces;
+using UserSystem.Infrastructure.Security;
 
 namespace UserSystem.Application.Services;
 
 public class UserService(
+    PasswordHasher hasher,
     IUserRepository repository
 )
 {
@@ -41,7 +43,7 @@ public class UserService(
         if (await repository.ExistsByEmailAsync(userDTO.Email))
             throw new EmailAlreadyExistException("email already exists");
         
-        var user = new User(userDTO.Name, userDTO.Email, userDTO.Password);
+        var user = new User(userDTO.Name, userDTO.Email, hasher.HashPassword(userDTO.Password));
 
         await repository.CreateAsync(user);
         await repository.SaveChangesAsync();
