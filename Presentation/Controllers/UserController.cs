@@ -42,4 +42,11 @@ public class UserController(
         [FromBody] UserUpdateEmailDTO updateDTO
     )
         => Ok(await service.UpdateEmail(id, updateDTO));
+    
+    [HttpPatch("{id:int}/password")]
+    public async Task<ActionResult<UserResponseDTO>> UpdatePassword(
+        int id,
+        [FromBody] UserUpdatePasswordDTO updateDTO
+    )
+        => Ok(await service.UpdatePassword(id, updateDTO));
 }

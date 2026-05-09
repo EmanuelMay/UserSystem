@@ -46,4 +46,12 @@ public class User
         
         Email = email;
     }
+
+    public void UpdatePassword(string password)
+    {
+        if (string.IsNullOrWhiteSpace(password))
+            throw new ArgumentException("password cannot be empty");
+        
+        Password = password;
+    }
 }
