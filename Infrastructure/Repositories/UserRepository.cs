@@ -18,4 +18,6 @@ public class UserRepository(
     public async Task<bool> ExistsByEmailAsync(string email) => await repository.Users.AnyAsync(u => u.Email == email);
 
     public async Task SaveChangesAsync() => await repository.SaveChangesAsync();
+
+    public void Delete(User user) => repository.Users.Remove(user);
 }

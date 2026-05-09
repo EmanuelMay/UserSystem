@@ -22,4 +22,7 @@ public class UserController(
         var response = await service.CreateAsync(userDTO);
         return Created($"user/{response.Id}", response);
     }
+
+    [HttpDelete("{id:int}")]
+    public async Task<ActionResult<UserResponseDTO>> Delete(int id) => Ok(await service.Delete(id));
 }

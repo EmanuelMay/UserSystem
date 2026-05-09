@@ -52,4 +52,22 @@ public class UserService(
             Email = user.Email,
         };
     }
+
+    public async Task<UserResponseDTO> Delete(int id)
+    {
+        var user = await repository.GetUserAsync(id);
+
+        if (user is null)
+            throw new UserNotFoundException("user not found");
+        
+        repository.Delete(user);
+        await repository.SaveChangesAsync();
+
+        return new UserResponseDTO()
+        {
+            Id = user.Id,
+            Name = user.Name,
+            Email = user.Email
+        };
+    }
 }

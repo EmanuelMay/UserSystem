@@ -13,4 +13,6 @@ public interface IUserRepository
     public Task<bool> ExistsByEmailAsync(string email);
 
     public Task SaveChangesAsync();
+
+    public void Delete(User user);
 }
