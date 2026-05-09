@@ -118,7 +118,7 @@ public class UserService(
         if (user is null)
             throw new UserNotFoundException("user not found");
         
-        user.UpdatePassword(userDTO.Password);
+        user.UpdatePassword(hasher.HashPassword(userDTO.Password));
         await repository.SaveChangesAsync();
 
         return new UserResponseDTO()
