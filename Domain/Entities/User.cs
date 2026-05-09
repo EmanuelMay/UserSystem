@@ -30,4 +30,12 @@ public class User
 
     [StringLength(255)]
     public string Password { get; private set; } = null!;
+
+    public void UpdateName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("name cannot be empty");
+        
+        Name = name;
+    }
 }
