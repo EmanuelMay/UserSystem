@@ -73,14 +73,14 @@ public class UserService(
         };
     }
 
-    public async Task<UserResponseDTO> UpdateName(int id, string name)
+    public async Task<UserResponseDTO> UpdateName(int id, UserUpdateNameDTO userDTO)
     {
         var user = await repository.GetUserAsync(id);
 
         if (user is null)
             throw new UserNotFoundException("user not found");
 
-        user.UpdateName(name);
+        user.UpdateName(userDTO.Name);
 
         await repository.SaveChangesAsync();
 

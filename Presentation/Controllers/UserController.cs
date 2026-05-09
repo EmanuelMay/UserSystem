@@ -30,6 +30,9 @@ public class UserController(
         => Ok(await service.Delete(id));
 
     [HttpPatch("{id:int}")]
-    public async Task<ActionResult<UserResponseDTO>> UpdateName(int id, [FromBody] string name) 
-        => Ok(await service.UpdateName(id, name));
+    public async Task<ActionResult<UserResponseDTO>> UpdateName(
+        int id,
+        [FromBody] UserUpdateNameDTO updateDTO
+    ) 
+        => Ok(await service.UpdateName(id, updateDTO));
 }
