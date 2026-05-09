@@ -29,10 +29,17 @@ public class UserController(
     public async Task<ActionResult<UserResponseDTO>> Delete(int id)
         => Ok(await service.Delete(id));
 
-    [HttpPatch("{id:int}")]
+    [HttpPatch("{id:int}/name")]
     public async Task<ActionResult<UserResponseDTO>> UpdateName(
         int id,
         [FromBody] UserUpdateNameDTO updateDTO
     ) 
         => Ok(await service.UpdateName(id, updateDTO));
+    
+    [HttpPatch("{id:int}/email")]
+    public async Task<ActionResult<UserResponseDTO>> UpdateEmail(
+        int id,
+        [FromBody] UserUpdateEmailDTO updateDTO
+    )
+        => Ok(await service.UpdateEmail(id, updateDTO));
 }

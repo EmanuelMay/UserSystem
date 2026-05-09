@@ -2,8 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace UserSystem.Application.DTO;
 
-public class UserUpdateNameDTO
+public class UserUpdateEmailDTO
 {
     [Required]
-    public string Name { get; set; } = null!;
+    [EmailAddress]
+    public string Email { get; set; } = null!;
 }

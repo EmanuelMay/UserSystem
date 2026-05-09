@@ -38,4 +38,12 @@ public class User
         
         Name = name;
     }
+
+    public void UpdateEmail(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+            throw new ArgumentException("email cannot be empty");
+        
+        Email = email;
+    }
 }

@@ -81,7 +81,26 @@ public class UserService(
             throw new UserNotFoundException("user not found");
 
         user.UpdateName(userDTO.Name);
+        await repository.SaveChangesAsync();
 
+        return new UserResponseDTO()
+        {
+            Id = user.Id,
+            Name = user.Name,
+            Email = user.Email
+        };
+    }
+
+    public async Task<UserResponseDTO> UpdateEmail(int id, UserUpdateEmailDTO userDTO)
+    {
+        var user = await repository.GetUserAsync(id);
+
+        if (user is null)
+            throw new UserNotFoundException("user not found");
+        if (await repository.ExistsByEmailAsync(userDTO.Email))
+            throw new EmailAlreadyExistException("email already exists");
+        
+        user.UpdateEmail(userDTO.Email);
         await repository.SaveChangesAsync();
 
         return new UserResponseDTO()
