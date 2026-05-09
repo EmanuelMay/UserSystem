@@ -8,6 +8,13 @@ public class User
 
     public User(string name, string email, string password)
     {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("name cannot be empty");
+        if (string.IsNullOrWhiteSpace(email))
+            throw new ArgumentException("email cannot be empty");
+        if (string.IsNullOrWhiteSpace(password))
+            throw new ArgumentException("password cannot be empty");
+
         Name = name;
         Email = email;
         Password = password;
