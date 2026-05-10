@@ -1,10 +1,11 @@
 using System.Security.Cryptography;
 using System.Text;
 using Konscious.Security.Cryptography;
+using UserSystem.Domain.Interfaces;
 
 namespace UserSystem.Infrastructure.Security
 {
-    public class PasswordHasher
+    public class PasswordHasher : IPasswordHasher
     {
         private const int SaltSize = 16;
 

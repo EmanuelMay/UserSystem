@@ -14,7 +14,11 @@ public class UserController(
     public async Task<ActionResult<UserResponseDTO>> CreateAsync([FromBody] UserCreateDTO userDTO)
     {
         var response = await service.CreateAsync(userDTO);
-        return Created($"user/{response.Id}", response);
+        return CreatedAtAction(
+            nameof(CreateAsync),
+            new { id = response.Id },
+            response
+        );
     }
 
     [HttpGet]
@@ -26,8 +30,11 @@ public class UserController(
         => Ok(await service.GetUserAsync(id));
 
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult<UserResponseDTO>> Delete(int id)
-        => Ok(await service.Delete(id));
+    public async Task<ActionResult> Delete(int id)
+    {
+        await service.DeleteAsync(id);
+        return NoContent();
+    }
 
     [HttpPatch("{id:int}/name")]
     public async Task<ActionResult<UserResponseDTO>> UpdateName(

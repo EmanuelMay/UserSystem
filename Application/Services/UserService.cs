@@ -50,12 +50,13 @@ public class UserService(
 
         return new UserResponseDTO
         {
+            Id = user.Id,
             Name = user.Name,
-            Email = user.Email,
+            Email = user.Email
         };
     }
 
-    public async Task<UserResponseDTO> Delete(int id)
+    public async Task DeleteAsync(int id)
     {
         var user = await repository.GetUserAsync(id);
 
@@ -64,13 +65,6 @@ public class UserService(
         
         repository.Delete(user);
         await repository.SaveChangesAsync();
-
-        return new UserResponseDTO()
-        {
-            Id = user.Id,
-            Name = user.Name,
-            Email = user.Email
-        };
     }
 
     public async Task<UserResponseDTO> UpdateName(int id, UserUpdateNameDTO userDTO)
@@ -97,7 +91,7 @@ public class UserService(
 
         if (user is null)
             throw new UserNotFoundException("user not found");
-        if (await repository.ExistsByEmailAsync(userDTO.Email))
+        if (await repository.ExistsByEmailAsync(userDTO.Email) && user.Email != userDTO.Email)
             throw new EmailAlreadyExistException("email already exists");
         
         user.UpdateEmail(userDTO.Email);

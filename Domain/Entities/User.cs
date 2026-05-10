@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace UserSystem.Domain.Entities;
 
@@ -10,8 +11,8 @@ public class User
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("name cannot be empty");
-        if (string.IsNullOrWhiteSpace(email))
-            throw new ArgumentException("email cannot be empty");
+        if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            throw new ArgumentException("email invalid");
         if (string.IsNullOrWhiteSpace(password))
             throw new ArgumentException("password cannot be empty");
 
@@ -41,8 +42,8 @@ public class User
 
     public void UpdateEmail(string email)
     {
-        if (string.IsNullOrWhiteSpace(email))
-            throw new ArgumentException("email cannot be empty");
+        if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            throw new ArgumentException("email invalid");
         
         Email = email;
     }

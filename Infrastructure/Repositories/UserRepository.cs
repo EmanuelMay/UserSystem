@@ -9,9 +9,9 @@ public class UserRepository(
     AppDbContext repository
 ) : IUserRepository
 {
-    public async Task<IEnumerable<User>> GetAllAsync() => await repository.Users.ToListAsync();
+    public async Task<IEnumerable<User>> GetAllAsync() => await repository.Users.AsNoTracking().ToListAsync();
 
-    public async Task<User?> GetUserAsync(int id) => await repository.Users.FirstOrDefaultAsync(u => u.Id == id);
+    public async Task<User?> GetUserAsync(int id) => await repository.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
 
     public async Task CreateAsync(User user) => await repository.Users.AddAsync(user);
 

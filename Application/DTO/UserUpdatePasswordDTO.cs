@@ -4,6 +4,7 @@ namespace UserSystem.Application.DTO;
 
 public class UserUpdatePasswordDTO
 {
+    [Required]
     [MinLength(8)]
     public string Password { get; set; } = null!;
 }
