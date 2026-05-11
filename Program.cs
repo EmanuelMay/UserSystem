@@ -1,10 +1,10 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UserSystem.Application.Services;
 using UserSystem.Domain.Interfaces;
 using UserSystem.Infrastructure.Context;
 using UserSystem.Infrastructure.Repositories;
 using UserSystem.Infrastructure.Security;
+using UserSystem.Presentation.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +26,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.ConfigureExceptionHandler();
 }
 
 app.UseHttpsRedirection();

@@ -7,7 +7,7 @@ using UserSystem.Infrastructure.Security;
 namespace UserSystem.Application.Services;
 
 public class UserService(
-    PasswordHasher hasher,
+    IPasswordHasher hasher,
     IUserRepository repository
 )
 {
