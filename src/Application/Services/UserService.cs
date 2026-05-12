@@ -2,7 +2,6 @@ using UserSystem.Application.DTO;
 using UserSystem.Domain.Entities;
 using UserSystem.Domain.Exceptions;
 using UserSystem.Domain.Interfaces;
-using UserSystem.Infrastructure.Security;
 
 namespace UserSystem.Application.Services;
 
@@ -15,27 +14,14 @@ public class UserService(
     {
         var users = await repository.GetAllAsync();
 
-        return users.Select(u => new UserResponseDTO
-        {
-            Id = u.Id,
-            Name = u.Name,
-            Email = u.Email
-        });
+        return users.Select(u => ToDTO(u));
     }
 
     public async Task<UserResponseDTO> GetUserAsync(int id)
     {
-        var user = await repository.GetUserAsync(id);
-
-        if (user is null)
-            throw new UserNotFoundException("user not found");
+        var user = await GetUserOrThrowAsync(id);
         
-        return new UserResponseDTO()
-        {
-            Id = user.Id,
-            Name = user.Name,
-            Email = user.Email
-        };
+        return ToDTO(user);
     }
 
     public async Task<UserResponseDTO> CreateAsync(UserCreateDTO userDTO)
@@ -48,12 +34,7 @@ public class UserService(
         await repository.CreateAsync(user);
         await repository.SaveChangesAsync();
 
-        return new UserResponseDTO
-        {
-            Id = user.Id,
-            Name = user.Name,
-            Email = user.Email
-        };
+        return ToDTO(user);
     }
 
     public async Task DeleteAsync(int id)
@@ -69,34 +50,39 @@ public class UserService(
 
     public async Task<UserResponseDTO> UpdateName(int id, UserUpdateNameDTO userDTO)
     {
-        var user = await repository.GetUserAsync(id);
-
-        if (user is null)
-            throw new UserNotFoundException("user not found");
+        var user = await GetUserOrThrowAsync(id);
 
         user.UpdateName(userDTO.Name);
         await repository.SaveChangesAsync();
 
-        return new UserResponseDTO()
-        {
-            Id = user.Id,
-            Name = user.Name,
-            Email = user.Email
-        };
+        return ToDTO(user);
     }
 
     public async Task<UserResponseDTO> UpdateEmail(int id, UserUpdateEmailDTO userDTO)
     {
-        var user = await repository.GetUserAsync(id);
+        var user = await GetUserOrThrowAsync(id);
 
-        if (user is null)
-            throw new UserNotFoundException("user not found");
         if (await repository.ExistsByEmailAsync(userDTO.Email) && user.Email != userDTO.Email)
             throw new EmailAlreadyExistException("email already exists");
         
         user.UpdateEmail(userDTO.Email);
         await repository.SaveChangesAsync();
 
+        return ToDTO(user);
+    }
+
+    public async Task<UserResponseDTO> UpdatePassword(int id, UserUpdatePasswordDTO userDTO)
+    {
+        var user = await GetUserOrThrowAsync(id);
+        
+        user.UpdatePassword(hasher.HashPassword(userDTO.Password));
+        await repository.SaveChangesAsync();
+
+        return ToDTO(user);
+    }
+
+    private UserResponseDTO ToDTO(User user)
+    {
         return new UserResponseDTO()
         {
             Id = user.Id,
@@ -105,21 +91,9 @@ public class UserService(
         };
     }
 
-    public async Task<UserResponseDTO> UpdatePassword(int id, UserUpdatePasswordDTO userDTO)
+    private async Task<User> GetUserOrThrowAsync(int id)
     {
         var user = await repository.GetUserAsync(id);
-
-        if (user is null)
-            throw new UserNotFoundException("user not found");
-        
-        user.UpdatePassword(hasher.HashPassword(userDTO.Password));
-        await repository.SaveChangesAsync();
-
-        return new UserResponseDTO()
-        {
-            Id = user.Id,
-            Name = user.Name,
-            Email = user.Email
-        };
+        return user ?? throw new UserNotFoundException("user not found");
     }
 }
