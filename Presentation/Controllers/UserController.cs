@@ -14,9 +14,8 @@ public class UserController(
     public async Task<ActionResult<UserResponseDTO>> CreateAsync([FromBody] UserCreateDTO userDTO)
     {
         var response = await service.CreateAsync(userDTO);
-        return CreatedAtAction(
-            nameof(CreateAsync),
-            new { id = response.Id },
+        return Created(
+            $"/user/{response.Id}",
             response
         );
     }
@@ -26,7 +25,7 @@ public class UserController(
         => Ok(await service.GetAllAsync());
 
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<UserResponseDTO>> GetUserAsync(int id) 
+    public async Task<ActionResult<UserResponseDTO>> GetUserAsync(int id)
         => Ok(await service.GetUserAsync(id));
 
     [HttpDelete("{id:int}")]
