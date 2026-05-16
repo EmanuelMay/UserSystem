@@ -5,7 +5,7 @@ using UserSystem.Application.Services;
 namespace UserSystem.Presentation.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("users")]
 public class UserController(
     UserService service
 ) : Controller

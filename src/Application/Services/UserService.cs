@@ -39,10 +39,7 @@ public class UserService(
 
     public async Task DeleteAsync(int id)
     {
-        var user = await repository.GetUserAsync(id);
-
-        if (user is null)
-            throw new UserNotFoundException("user not found");
+        var user = await GetUserOrThrowAsync(id);
         
         repository.Delete(user);
         await repository.SaveChangesAsync();
